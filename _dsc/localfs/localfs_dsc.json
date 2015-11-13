@@ -1,0 +1,17 @@
+[
+  {
+    "location" : "C:/Temp/",
+    "mask"     : "**/*.+(png|jpg|jpeg|gif)",
+    "type"     : "downloaded images"
+  },
+  {
+    "location" : "C:/Temp/JS",
+    "mask"     : "**/*.js",
+    "type"     : "js scripts"
+  },
+  {
+    "location" : "C:/Temp/Shell",
+    "mask"     : "**/*.sh",
+    "type"     : "shell scripts"
+  }
+]
