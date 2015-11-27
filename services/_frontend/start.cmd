@@ -1,4 +1,4 @@
-pushd C:\Program Files\NGinxServer\nginx-1.8.0\
+pushd .\.nginx
 start nginx 
 popd
 
