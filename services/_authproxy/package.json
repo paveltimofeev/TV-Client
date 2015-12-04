@@ -1,0 +1,16 @@
+{
+  "name": "authproxy",
+  "version": "1.0.0",
+  "description": "SN auth proxy srv",
+  "main": "proxy.js",
+  "scripts": {
+    "start": "node proxy.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pavel Timofeev",
+  "license": "ISC",
+  "dependencies": {
+    "jsonfile": "^2.2.3",
+    "vk-auth": "^1.0.3"
+  }
+}
