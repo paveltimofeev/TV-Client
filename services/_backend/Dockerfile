@@ -6,7 +6,7 @@ ADD backend ./backend/
 ADD package.json ./
 
 RUN npm install -g swagger
-RUN npm install
+RUN cd ./backend && npm install
 
 CMD ["swagger", "project", "start", "backend"]
 
