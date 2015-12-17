@@ -11,4 +11,4 @@ RUN /etc/nginx/install.sh
 
 ENTRYPOINT ["nginx"]
 
-EXPOSE 443
+EXPOSE 80 443
