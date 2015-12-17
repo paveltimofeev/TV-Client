@@ -31,8 +31,21 @@ module.exports = {
 
 function music(req, res) {
   
-  var user = req.swagger.params.user.value || 'unknown';
-  res.json( user );
+  var user = req.swagger.params.user.value;
+  var search = req.swagger.params.search.value;
+  
+  if(search)
+  {
+    res.json( {result: ["to search", "or not to search"]});
+  }
+  else if(user)
+  {
+    res.json( {result: ["bingo", "you have got it"] });
+  }
+  else
+  {
+    res.json( { result: "empty request. pass user or search parameters" } );
+  }
 }
 /*
   Functions in a127 controllers used for operations should take two parameters:

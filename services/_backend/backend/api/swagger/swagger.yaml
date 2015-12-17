@@ -28,6 +28,11 @@ paths:
           description: user id
           required: false
           type: string
+        - name: search
+          in: query
+          description: search query
+          required: false
+          type: string
       responses:
         "200":
           description: Success
