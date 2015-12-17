@@ -44,6 +44,11 @@ function getToken( callback ) {
         console.log( 'cached token is expired' );
     
         var config = require( 'jsonfile' ).readFileSync( creds_location );
+        
+        // override creds from env if exists
+        config.login = process.env.VK_LOGIN || config.login;
+        config.password = process.env.VK_PASSW || config.password;
+        
         Auth( config, function( err, token ) {
       
           console.log( 'get new token' );

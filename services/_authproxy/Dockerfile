@@ -1,6 +1,6 @@
-FROM node:4-onbuild
+FROM cusspvz/node:0.12.7
 
-ENV CHANGE_DATE="14-Dec-2015" 
+ENV CHANGE_DATE="17-Dec-2015" 
 
 ENV VK_LOGIN="name@server.com" \
     VK_PASSW="pawssodr" \
@@ -10,8 +10,8 @@ ADD proxy.js /
 ADD auth.js /
 ADD package.json /
 
-RUN npm install
+RUN cd / && npm install
 
-CMD ["npm", "start", ${VK_LOGIN}, ${VK_PASSW}, ${VK_SCOPE}]
+ENTRYPOINT ["npm", "start", ${VK_LOGIN}, ${VK_PASSW}, ${VK_SCOPE}]
 
 EXPOSE 8080 

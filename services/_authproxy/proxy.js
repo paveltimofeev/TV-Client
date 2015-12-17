@@ -5,6 +5,13 @@ var auth = require('./auth.js');
 var http = require('http');
 var https = require('https');
 
+var port = 8080;
+
+var arg1 = process.argv[2];
+var arg2 = process.argv[3];
+
+process.env.VK_LOGIN = arg1 || null;
+process.env.VK_PASSW = arg2 || null;
 
 auth.GetToken( function(err, token){
   
@@ -57,6 +64,6 @@ http.createServer( function(req, res){
   
   back_req.end();
   
-}).listen( 8080 );
+}).listen( port );
 
-console.log('Auth proxy started at localhost:8080');
+console.log( 'Auth proxy started at localhost:' + port );
