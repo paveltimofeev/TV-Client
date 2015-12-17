@@ -2,7 +2,7 @@ FROM nginx
 
 ENV CHANGE_DATE="17-Dec-2015"
 
-COPY html/solid_state/ /usr/share/nginx/html
+#COPY html/solid_state/ /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY install.sh /etc/nginx/install.sh
 
