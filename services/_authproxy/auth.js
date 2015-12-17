@@ -61,6 +61,11 @@ function getToken( callback ) {
         config.scope = process.env.VK_SCOPE || config.scope;
         config.applicationId = process.env.VK_APPID || config.applicationId;
   
+        console.log('application id : ' + config.applicationId);
+        console.log('scope          : ' + config.scope);
+        console.log('login          : ' + config.login);
+        console.log('password       : ' + (config.password || 'not set'));
+        
         Auth( config, function( err, token ) {
       
           console.log( 'get new token' );
