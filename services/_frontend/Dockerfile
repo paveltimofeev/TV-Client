@@ -3,7 +3,7 @@ FROM nginx
 ENV CHANGE_DATE="17-Dec-2015"
 
 ENV BA_LOGIN="user" \
-    BA_PASSW="pass" \
+    BA_PASSW="pass" 
     
 #COPY html/solid_state/ /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
