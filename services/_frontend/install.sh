@@ -1,20 +1,23 @@
 #cp nginx.conf .nginx/conf/nginx.conf
 
-mkdir .private
+location=./.private
+
+mkdir $location
 
 echo generate ssl keys
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
    -subj "//C=UK/ST=sNYC/L=AT/O=NGINX/OU=PROXY/CN=localhost" \
-   -keyout ./.private/ssl.key \
-   -out ./.private/ssl.pem #-config ./openssl.cnf
+   -keyout $location/ssl.key \
+   -out $location/ssl.pem #-config ./openssl.cnf
+
 
 echo "SETUP BASIC AUTH"
-echo "SET USER NAME:"
+echo -n "SET USER NAME:"
 read usr
-echo "SET USER PASS:"
+echo -n "SET USER PASS:"
 read pas
 
 echo generate basic auth login/pass
-echo -n '$usr:$pas' > ./.private/.htpasswd
-openssl passwd -apr1 pass >> ./.private/.htpasswd
+echo -n '$usr:' > $location/.htpasswd
+openssl passwd -apr1 $pas >> $location/.htpasswd
 
