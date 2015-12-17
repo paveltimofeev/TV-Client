@@ -9,9 +9,13 @@ var port = 8080;
 
 var arg1 = process.argv[2];
 var arg2 = process.argv[3];
+var arg3 = process.argv[4];
+var arg4 = process.argv[5];
 
 process.env.VK_LOGIN = arg1 || null;
 process.env.VK_PASSW = arg2 || null;
+process.env.VK_SCOPE = arg3 || null;
+process.env.VK_APPID = arg4 || null;
 
 auth.GetToken( function(err, token){
   

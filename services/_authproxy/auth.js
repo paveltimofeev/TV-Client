@@ -1,7 +1,17 @@
+var path = require('path');
 var fs = require('fs');
 
-var creds_location = './.private/creds.json';
-var tokencache_location = './.private/token.cache';
+var folder = '.private_';
+var creds_location = path.join( folder, 'creds.json' );
+var tokencache_location = path.join( folder, 'token.cache' );
+
+if( !fs.existsSync(folder))
+{
+  fs.mkdirSync(folder);
+}
+
+if( !fs.existsSync(creds_location)){ fs.writeFileSync(creds_location, "{}", 'utf8'); }
+if( !fs.existsSync(tokencache_location)){ fs.writeFileSync(tokencache_location, "", 'utf8'); }
 
 function Auth( config, callback ){
 
@@ -48,7 +58,9 @@ function getToken( callback ) {
         // override creds from env if exists
         config.login = process.env.VK_LOGIN || config.login;
         config.password = process.env.VK_PASSW || config.password;
-        
+        config.scope = process.env.VK_SCOPE || config.scope;
+        config.applicationId = process.env.VK_APPID || config.applicationId;
+  
         Auth( config, function( err, token ) {
       
           console.log( 'get new token' );
