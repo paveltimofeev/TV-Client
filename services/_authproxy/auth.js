@@ -1,7 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 
-var folder = '.private_';
+var folder = '.private';
 var creds_location = path.join( folder, 'creds.json' );
 var tokencache_location = path.join( folder, 'token.cache' );
 
@@ -16,15 +16,18 @@ if( !fs.existsSync(tokencache_location)){ fs.writeFileSync(tokencache_location, 
 function Auth( config, callback ){
 
   var vkAuth = require('vk-auth')(config.applicationId, config.scope);
-  vkAuth.authorize( config.login, config.password );
-
+  
   vkAuth.on( 'error', function (err) {
+    console.log('auth error ' + JSON.stringify(err));
     callback( err, null );
   });
 
   vkAuth.on( 'auth', function (token) {
+    console.log('authenticated');
     callback( null, token );
-  })
+  });
+  
+  vkAuth.authorize( config.login, config.password );
 }
 
 function getToken( callback ) {
@@ -64,7 +67,7 @@ function getToken( callback ) {
         console.log('application id : ' + config.applicationId);
         console.log('scope          : ' + config.scope);
         console.log('login          : ' + config.login);
-        console.log('password       : ' + (config.password || 'not set'));
+        console.log('password       : ' + (config.password ? '*' : 'not set'));
         
         Auth( config, function( err, token ) {
       
