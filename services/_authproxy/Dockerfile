@@ -13,6 +13,6 @@ ADD package.json /app/
 
 RUN cd /app/ && npm install
 
-ENTRYPOINT ["npm", "start", "${VK_LOGIN}", "${VK_PASSW}", "${VK_SCOPE}", "${VK_APPID}"]
+ENTRYPOINT ["sudo", "npm", "start", "${VK_LOGIN}", "${VK_PASSW}", "${VK_SCOPE}", "${VK_APPID}"]
 
 EXPOSE 8080 

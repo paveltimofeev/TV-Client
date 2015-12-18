@@ -1,10 +1,10 @@
 #cp nginx.conf .nginx/conf/nginx.conf
 
-location=./.private
+location=/frontend/.private
 usr=$1
 pas=$2
 
-mkdir $location
+mkdir $location -p
 
 echo generate ssl keys
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
