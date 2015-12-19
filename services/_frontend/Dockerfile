@@ -1,6 +1,6 @@
 FROM nginx
 
-ENV CHANGE_DATE="17-Dec-2015"
+ENV CHANGE_DATE="19-Dec-2015"
 
 ENV BA_LOGIN="user" \
     BA_PASSW="pass" 
@@ -12,6 +12,6 @@ COPY install.sh /etc/nginx/install.sh
 # Generate ssl certificate and basic auth creds
 RUN apt-get update && apt-get install sudo && sudo bash /etc/nginx/install.sh ${BA_LOGIN} ${BA_PASSW}
 
-ENTRYPOINT ["nginx"]
+ENTRYPOINT ["service", "nginx", "start"]
 
 EXPOSE 80 443

@@ -1,5 +1,3 @@
-#cp nginx.conf .nginx/conf/nginx.conf
-
 location=/frontend/.private
 usr=$1
 pas=$2
@@ -13,6 +11,6 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
    -out $location/ssl.pem #-config ./openssl.cnf
 
 echo generate basic auth login/pass
-echo -n '$usr:' > $location/.htpasswd
+echo -n "$usr:" > $location/.htpasswd
 openssl passwd -apr1 $pas >> $location/.htpasswd
-
+cat /frontend/.private/.htpasswd
