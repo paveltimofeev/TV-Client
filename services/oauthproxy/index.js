@@ -12,30 +12,40 @@ function addService( opts ) {
     res.set( 'Content-Type', 'text/html' );
     res.send( 'OAuthProxy: Hello World!<br/>'
     + 'OAuthProxy: Services:<br/>'
-    + 'OAuthProxy: <a href="/' + opts.serviceName + '">' + opts.serviceName + '</a> | Test: <a href="/' + opts.serviceName + '/q/v1/users/2358246715/media/recent/">/v1/users/2358246715/media/recent/</a><br/>' );
+    + 'OAuthProxy: <a href="/' + opts.serviceName + '">' + opts.serviceName + '</a> <br/>'
+    + 'Test: <a href="/' + opts.serviceName + '/q/v1/users/2358246715/media/recent/">/v1/users/2358246715/media/recent/</a><br/>'
+    + 'Test: <a href="/' + opts.serviceName + '/q/v1/media/search?lat=48.858844&lng=2.294351">/v1/media/search?lat=48.858844&lng=2.294351</a><br/>' 
+    + 'Test: <a href="/' + opts.serviceName + '/q/v1/users/search?q=kassandraurena">/v1/users/search?q=kassandraurena</a>'
+    );
     
   } );
   
   app.get( '/' + opts.serviceName + '/', function( req, res ) {
-    
-    if( !cachedToken )
-      res.redirect( 302, opts.oauthUri );
-    else
+  
+    if( isTokenCached( opts.oauthUri ) )
       res.redirect( '/' + opts.serviceName + '/done?token=' + cachedToken );
   } );
   
   app.get( '/' + opts.serviceName + '/callback', function( req, res ) {
-    opts.oauthCallback( req, res, function(err, token){ cachedToken = token; res.redirect('/'); } );
+    opts.oauthCallback( req, res, 
+      function( err, token ){ cachedToken = token; res.redirect('/'); } );
   } );
   
   app.get( '/' + opts.serviceName + '/q/*', function( req, res ) {
     
-    if( !cachedToken )
-      res.redirect( '/' );
-    else
+    if( isTokenCached( opts.oauthUri ) )
       opts.serviceResponse( cachedToken, req, res );
   } );
   
+  function isTokenCached( redirectUri ) {
+    
+    if( !cachedToken ) {
+      res.redirect( 302, redirectUri );
+      return false; 
+    }
+    
+    return true;
+  }
 }
 
 function instagram() {
@@ -65,7 +75,9 @@ function instagram() {
   var serviceResponse = function(token, req, res){
     
     var sub_query = req.originalUrl.substr( req.route.path.length -1 );
-    var query = 'https://api.instagram.com/' + sub_query + '?access_token=' + token;
+    sub_query += ( sub_query[sub_query.length-1] == "/") ? '?' : '&';
+    
+    var query = 'https://api.instagram.com/' + sub_query + 'access_token=' + token;
     console.log(query);
     
     request.get( query, function(err, response, body){
