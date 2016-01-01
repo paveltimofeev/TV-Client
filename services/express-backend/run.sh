@@ -1,0 +1,2 @@
+#bash
+node index.js
