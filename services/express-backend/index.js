@@ -15,6 +15,7 @@ function jsonResponse( res, data )
         try 
         {
             res.set( 'Content-Type', 'text/json' );
+            res.set( 'Access-Control-Allow-Origin', '*');
             res.json( JSON.parse( data ) );
         }
         catch( error ) 
@@ -47,6 +48,35 @@ addStub( '/movies/', './stubs/vkontakte-video.json' );
 addStub( '/music/', './stubs/vkontakte-music.json' );
 addStub( '/photos/', './stubs/empty.json' );
 addStub( '/search/*', './stubs/empty.json' );
+
+app.get( /cinema/ , function( req, res ) {
+
+    fs.readdir('C:/Users/Pavel/Desktop/Our Movie Collections/Cinema/', function(err, files){
+        
+        var data = { 'response': { 'items':[] }};
+        
+        
+        if(err)
+            console.log( err );
+        else
+            files.forEach( function( file ){
+                
+                var item = {
+                    "title" : file,
+                    "duration" : 95 * 60,
+                    "description" : file,
+                    "photo_320" : "../img/stub2.jpg",
+                    "player" : file
+                };
+            
+                data.response.items.push( item );
+            });
+        
+            res.set( 'Content-Type', 'text/json' );
+            res.set( 'Access-Control-Allow-Origin', '*');
+            res.json( data );
+    });
+});
 
 
 var server = app.listen( port, function() 
