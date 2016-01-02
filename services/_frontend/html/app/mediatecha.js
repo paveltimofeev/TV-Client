@@ -1,7 +1,7 @@
 ﻿// alert('ok');
 
 var mediatechaApp = angular.module( 'mediatechaControllers', [] );
-
+var backend = 'http://localhost:3000';
 
 function getApproximateDuration(seconds)
 {
@@ -24,6 +24,31 @@ function vkMovieMapping( item )
     return item;
 }
 
+function cinemaMovieMapping( item )
+{
+    
+    item.title = item.title.replace(/(\.RUS|\.ENG|\.SUB|\.DUB|\.XVID|\.AC3|\.HDRIP|\.WEB-DLRIP|\.HDRIP|\.HDTVRIP|\.DTS|\.BLURAY|\.BDRIP|\.1080P|\.AVC|\.DVDScr|\.Eng|\.x264)/gi, ' ');
+    
+    item.title = item.title.replace(/[\.|_]/g, ' ');
+    item.img = item.photo_320;
+    item.url = backend + item.uri;
+    item.exttype = 'primary';
+    item.size = parseInt( item.size / 1024 / 1024) + ' Mb'
+    item.english = item.uri.match(/(\.|_)Eng/g) != null ? 'Eng': null;
+    item.subtitle = item.uri.match(/(\.|_)(Srt|Sub)/g) != null ? 'Subtitle': null;
+    
+    /*switch(item.extension)
+    {
+        case 'avi': item.exttype = 'primary'; break;
+        case 'mkv': item.exttype = 'warning'; break;
+        case 'mp4': item.exttype = 'success'; break;
+        case 'm4v': item.exttype = 'danger'; break;
+        default: item.exttype = 'info'; break;
+    }*/
+    
+    return item;
+}
+
 function stubMovieMapping( item )
 {
     //item.title = 'Title';
@@ -43,7 +68,7 @@ mediatechaApp.controller('VideoController', function MediaController($scope, $ht
                 "rows":[]
             }
             
-    $http.get('http://localhost:3000/movies/').success( function(data){
+    $http.get( backend + '/movies/').success( function(data){
             
             page.rows = [];
             var row = [];
@@ -74,7 +99,7 @@ mediatechaApp.controller('MusicController', function MediaController($scope, $ht
                 "rows":[]
             }
             
-    $http.get('http://localhost:3000/music/').success( function(data){
+    $http.get( backend + '/music/').success( function(data){
         
         page.rows = [];
         data.response.items.forEach(function(item, index){
@@ -95,14 +120,14 @@ mediatechaApp.controller('CinemaController', function MediaController($scope, $h
                 "rows":[]
             }
     
-        $http.get('http://localhost:3000/cinema/').success( function(data){
+        $http.get( backend + '/cinema/').success( function(data){
             
             page.rows = [];
             var row = [];
             
             data.response.items.forEach(function(item, index){
                
-                row.push( stubMovieMapping( item ) );
+                row.push( cinemaMovieMapping( item ) );
                 
                 if(index % 3 == 2)
                 {    

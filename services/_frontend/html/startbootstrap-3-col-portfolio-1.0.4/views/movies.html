@@ -17,9 +17,15 @@
                     <img class="img-responsive" src="{{movie.img}}" alt="">
                 </a>
                 <h3>
-                    <a href="{{movie.url}}">{{movie.title}}</a>
+                    <a href="{{movie.url}}" target="_blank">{{movie.title}}</a>
                 </h3>
-                <p><span class="label label-info">{{movie.dur}}</span></p>
+                <p>
+                    <span class="label label-info">{{movie.dur}}</span>
+                    <span class="label label-info">{{movie.size}}</span>
+                    <span class="label label-{{movie.exttype}}">{{movie.extension}}</span>
+                    <span class="label label-success">{{movie.english}}</span>
+                    <span class="label label-success">{{movie.subtitle}}</span>
+                </p>
                 <p>{{movie.description}}</p>
             </div>
         </div>   
