@@ -34,8 +34,8 @@ function cinemaMovieMapping( item )
     item.url = backend + item.uri;
     item.exttype = 'primary';
     item.size = parseInt( item.size / 1024 / 1024) + ' Mb'
-    item.english = item.uri.match(/(\.|_)Eng/g) != null ? 'Eng': null;
-    item.subtitle = item.uri.match(/(\.|_)(Srt|Sub)/g) != null ? 'Subtitle': null;
+    item.english = item.uri.match(/(\.|_|\()Eng/g) != null ? 'Eng': null;
+    item.subtitle = item.uri.match(/(\.|_|\()(Srt|Sub)/g) != null ? 'Subtitle': null;
     
     /*switch(item.extension)
     {
@@ -102,9 +102,10 @@ mediatechaApp.controller('MusicController', function MediaController($scope, $ht
     $http.get( backend + '/music/').success( function(data){
         
         page.rows = [];
-        data.response.items.forEach(function(item, index){
+        data.response.forEach(function(item, index){
             
             item.dur = getDuration( item.duration );
+            item.url = backend + '/download/music/' + btoa(item.url.split('?')[0]); // to base64
             page.rows.push( item );
         });
     });
