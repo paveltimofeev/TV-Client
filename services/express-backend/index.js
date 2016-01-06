@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var express = require('express');
+var https = require('https');
 var stubs = require('./stubs.js');
 var cinema = require('./cinema.js');
 
@@ -8,8 +9,6 @@ var app = express();
 var port = process.env.port || 3000;
 
 
-stubs.registerEndpointStub( app, '/movies/', './stubs/vkontakte-video.json' );
-stubs.registerEndpointStub( app, '/music2/', './stubs/vkontakte-music.json' );
 stubs.registerEndpointStub( app, '/photos/', './stubs/empty.json' );
 stubs.registerEndpointStub( app, '/search/*', './stubs/empty.json' );
 
@@ -22,21 +21,26 @@ app.get('/music/', function(req, res){
     
     res.set( 'Content-Type', 'text/json' );
     res.set( 'Access-Control-Allow-Origin', '*');    
-    request.get( url ).pipe(res); //add cache
+    request.get( url ).pipe(res); //add caching
 });
 
-app.get('/download/music/*', function(req, res){
+//
+// expect: /download/music/?url=base64_url&title=name
+//
+app.get('/download/music/', function(req, res){
     
     console.log('request ' + req.path);
+    console.log('query.url ' + (req.query.url || 'n/a'));
+    console.log('query.title ' + (req.query.title || 'n/a' ));
     
-    var urlbase64 = req.path.replace( '/download/music/' ,'' );
-    var url = new Buffer( urlbase64, 'base64' ).toString( 'ascii' );
+    var url = new Buffer( req.query.url, 'base64' ).toString( 'ascii' );
+    var title = (( req.query.title || 'music' ) +'.mp3').replace(/"/gi, "''");
     
     console.log('request for ' + url);
     
     res.set( 'Content-Type', 'text/json' );
     res.set( 'Access-Control-Allow-Origin', '*');    
-    res.set( 'Content-Disposition', 'attachment; filename="music.mp3"'); //add filename,size
+    res.set( 'Content-Disposition', 'attachment; filename="'+title+'"'); //add size
     request.get( url ).pipe(res);
 });
 
@@ -50,6 +54,15 @@ var opts = {
     
 cinema.registerEndpoints( app, opts );
 
+
+var options = {
+        key: fs.readFileSync('./.private/ssl.key', 'utf8'),  // privateKey
+        cert: fs.readFileSync('./.private/ssl.pem', 'utf8')    // certificate
+    };
+https.createServer(options, app).listen(port);
+console.log('Backend-stub app listening at https://%s:%s', '0.0.0.0', port);
+
+/*
 var server = app.listen( port, function() 
 {
   var host = server.address().address;
@@ -57,3 +70,4 @@ var server = app.listen( port, function()
 
   console.log('Backend-stub app listening at http://%s:%s', host, port);
 });
+*/

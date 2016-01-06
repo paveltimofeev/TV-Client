@@ -1,7 +1,8 @@
 ﻿// alert('ok');
 
 var mediatechaApp = angular.module( 'mediatechaControllers', [] );
-var backend = 'http://localhost:3000';
+//var backend = 'http://localhost:3000';
+var backend = 'https://dev-note:3000';
 
 function getApproximateDuration(seconds)
 {
@@ -37,15 +38,6 @@ function cinemaMovieMapping( item )
     item.english = item.uri.match(/(\.|_|\()Eng/g) != null ? 'Eng': null;
     item.subtitle = item.uri.match(/(\.|_|\()(Srt|Sub)/g) != null ? 'Subtitle': null;
     
-    /*switch(item.extension)
-    {
-        case 'avi': item.exttype = 'primary'; break;
-        case 'mkv': item.exttype = 'warning'; break;
-        case 'mp4': item.exttype = 'success'; break;
-        case 'm4v': item.exttype = 'danger'; break;
-        default: item.exttype = 'info'; break;
-    }*/
-    
     return item;
 }
 
@@ -75,7 +67,7 @@ mediatechaApp.controller('VideoController', function MediaController($scope, $ht
             
             data.response.items.forEach(function(item, index){
                
-                row.push( stubMovieMapping( item ) );
+                row.push( vkMovieMapping( item ) );
                 
                 if(index % 3 == 2)
                 {    
@@ -105,7 +97,7 @@ mediatechaApp.controller('MusicController', function MediaController($scope, $ht
         data.response.forEach(function(item, index){
             
             item.dur = getDuration( item.duration );
-            item.url = backend + '/download/music/' + btoa(item.url.split('?')[0]); // to base64
+            item.url = backend + '/download/music/?url=' + btoa(item.url.split('?')[0]) + '&title=' + item.title; // to base64
             page.rows.push( item );
         });
     });
