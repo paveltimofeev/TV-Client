@@ -1,7 +1,4 @@
-﻿// alert('ok');
-
-var mediatechaApp = angular.module( 'mediatechaControllers', [] );
-//var backend = 'http://localhost:3000';
+﻿var mediatechaApp = angular.module( 'mediatechaControllers', [] );
 var backend = 'https://dev-note:3000';
 
 function getApproximateDuration(seconds)
@@ -76,11 +73,10 @@ mediatechaApp.controller('VideoController', function MediaController($scope, $ht
                 }
             });
             
-            page.rows.push( row );     
-            
-            $scope.page = page;
+            page.rows.push( row );
         });
         
+    $scope.page = page;
 });
 
 mediatechaApp.controller('MusicController', function MediaController($scope, $http){
@@ -129,9 +125,8 @@ mediatechaApp.controller('CinemaController', function MediaController($scope, $h
                 }
             });
             
-            page.rows.push( row );     
-            
-            $scope.page = page;
+            page.rows.push( row );
         });
         
+        $scope.page = page;
 });
