@@ -1,10 +1,9 @@
 var request = require( 'request' );
 var oauthuri = 'http://localhost:8080';
 
-function registerEndpoints( app )
+function registerEndpoints( app, opts )
 {
-    
-    app.get('/music/', function(req, res){
+    app.get( opts.endpoint, function(req, res){
         
         console.log('request ' + req.path);
         
@@ -16,20 +15,18 @@ function registerEndpoints( app )
     });
 
     // expect: /download/music/?url=base64_url&title=name
-    app.get('/download/music/', function(req, res){
+    app.get( opts.download_endpoint, function(req, res){
         
         console.log('request ' + req.path);
-        console.log('query.url ' + (req.query.url || 'n/a'));
-        console.log('query.title ' + (req.query.title || 'n/a' ));
         
         var url = new Buffer( req.query.url, 'base64' ).toString( 'ascii' );
-        var title = (( req.query.title || 'music' ) +'.mp3').replace(/"/gi, "''");
-        
-        console.log('request for ' + url);
-        
-        res.set( 'Content-Type', 'text/json' );
+        var title = (( req.query.title || 'music' ) +'.mp3').toString( 'ascii' ).replace(/"/gi, "''");
+
+        console.log('requested url ' + url + '. title ' + (req.query.title || 'n/a' ));
+
+        res.set( 'Content-Type', 'audio/mpeg; charset=ascii' );
         res.set( 'Access-Control-Allow-Origin', '*');    
-        res.set( 'Content-Disposition', 'attachment; filename="'+title+'"'); //add size
+        res.set( 'Content-Disposition', 'attachment; filename="'+title+'"');
         request.get( url ).pipe(res);
     });
 }

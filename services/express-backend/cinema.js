@@ -31,7 +31,7 @@ function registerEndpoints( app, opts )
     });
 
     // files list
-    app.get( opts.cinema_endpoint , function( req, res ) {
+    app.get( opts.endpoint , function( req, res ) {
 
         console.log( 'request ' + req.path );
         
