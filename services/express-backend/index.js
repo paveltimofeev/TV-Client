@@ -10,6 +10,7 @@ var app = express();
 var port = process.env.port || 3000;
 
 
+stubs.registerEndpointStub( app, '/movies/', './stubs/vkontakte-video.json' );
 stubs.registerEndpointStub( app, '/photos/', './stubs/empty.json' );
 stubs.registerEndpointStub( app, '/search/*', './stubs/empty.json' );
 

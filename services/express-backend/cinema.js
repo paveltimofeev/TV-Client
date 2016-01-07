@@ -80,6 +80,8 @@ function registerEndpoints( app, opts )
                     });
                 });
                 
+                getCinimaInfo( data.response.items[0].title );
+                
                 res.status( 200 ).json( data );
                 console.log( data.response.items.length + ' files' );            
             }
@@ -89,7 +91,27 @@ function registerEndpoints( app, opts )
 
 function getCinimaInfo( fileName, cb )
 {
-        movieInfo( movieTitle( fileName ), function (err, res) { cb(err, res); });
+    
+    
+    console.log(fileName);
+      
+    // http://api.themoviedb.org/3/authentication/guest_session/new
+    // http://api.themoviedb.org/3/search/movie
+    // http://api.themoviedb.org/3/movie/{{id}}/images
+    
+    var request = require('request');
+
+    request({ 
+        method: 'GET', 
+        url: 'http://api.themoviedb.org/3/search/movie',
+        headers: { 'Accept': 'application/json'
+      }}, function (error, response, body) {
+      console.log('Status:', response.statusCode);
+      console.log('Headers:', JSON.stringify(response.headers));
+      console.log('Response:', body);
+    });
+
+        //movieInfo( movieTitle( fileName ), function (err, res) { cb(err, res); });
         
         /*
         {
